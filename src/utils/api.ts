@@ -19,7 +19,7 @@ export async function fetchTrendingMovies() {
 
 export async function fetchTrendingShows() {
   const res = await fetch(
-    `https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}language=en-US`,
+    `https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}`,
     { next: { revalidate: 3600 } }
   );
 

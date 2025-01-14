@@ -1,5 +1,5 @@
 import { MovieType } from '@/utils/types';
-import { fetchTrendingMovies, fetchTopRatedMovies } from '@/utils/api';
+import { fetchTrendingMovies } from '@/utils/api';
 
 export async function TrendingMovies({title}: {title: string}) {
   const movies = await fetchTrendingMovies();

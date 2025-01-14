@@ -1,4 +1,4 @@
-export interface MovieType {
+export interface Type {
     id: number;
     title: string;
     original_title: string;
@@ -14,5 +14,7 @@ export interface MovieType {
     video: boolean;
     genre_ids: number[];
     media_type: 'movie' | 'tv';
+    name: string;
+    first_air_date: string;
+    origin_country: string[];
   }
-  
