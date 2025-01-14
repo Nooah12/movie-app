@@ -6,7 +6,7 @@ export async function fetchTrendingMovies() {
   }
 
   const res = await fetch(
-    `https://api.themoviedb.org/3/trending/movie/week?api_key=fc941e702be4bb8ffafbe0ebac0b9ed3`,
+    `https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`,
     { next: { revalidate: 3600 } }
   );
   
@@ -16,6 +16,22 @@ export async function fetchTrendingMovies() {
 
   return res.json()
 }
+
+export async function fetchTrendingShows() {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}language=en-US`,
+    { next: { revalidate: 3600 } }
+  );
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch trending shows')
+  }
+
+  return res.json()
+}
+
+
+
 
 export const fetchTopRatedMovies = async () => {
     const res = await fetch(

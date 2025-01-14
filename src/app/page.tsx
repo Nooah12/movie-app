@@ -26,18 +26,15 @@ export default async function Home({searchParams}: { searchParams: {genre: strin
 
 
 
-import TrendingMovies from '@/components/TrendingMovies'
-import React from 'react'
+import { TrendingMovies } from '@/components/TrendingMovies';
 
 export default function Home() {
   return (
-    <>
-    <TrendingMovies />
-    </>
+    <main className='flex-grow'>
+      <TrendingMovies title={'Trending Movies'} />
+    </main>
   )
 }
-
-
 
 
 
