@@ -34,8 +34,8 @@ export default function Home() {
   return (
     <main className='flex-grow'>
       {/* <TrendingMovies title={'Trending Movies'} /> */}
-      <TrendingShows title={'Trending Movies'} fetchData={fetchTrendingMovies} />
-      <TrendingShows title={'Trending Shows'} fetchData={fetchTrendingShows} />
+      <TrendingShows listTitle={'Trending Movies'} fetchData={fetchTrendingMovies} />
+      <TrendingShows listTitle={'Trending Shows'} fetchData={fetchTrendingShows} />
     </main>
   )
 }
