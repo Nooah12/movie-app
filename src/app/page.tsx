@@ -27,6 +27,7 @@ export default async function Home({searchParams}: { searchParams: {genre: strin
 
 
 //import { TrendingMovies } from '@/components/movies/TrendingMovies';
+
 import { TrendingShows } from '@/components/tv-shows/TrendingShows';
 import { fetchTrendingShows, fetchTrendingMovies } from '@/utils/api';
 

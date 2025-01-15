@@ -43,14 +43,14 @@ export async function TrendingShows ({ listTitle, fetchData }: ListProps) {
           {items.results.slice(0, 10).map((item: Type, index: number) => (
             <li key={item.id} className="py-0.5">
               <div className="flex items-center gap-4 bg-gray-100 shadow-md rounded-lg px-2">
-                <span className="text-sm ml-2">{index +1}</span>
+                <span className="text-sm w-4 text-center">{index +1}</span>
                 <Image 
                         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
                         alt={item.title || item.name || "Movie poster"}
                         width={0}
                         height={0}
                         sizes="100vw"
-                        className="min-w-12 h-auto"
+                        className="min-w-10 h-auto"
                     />
                 <p className="text-sm flex-1">{item.title || item.name}</p>
                 <p className="text-sm ml-auto">{item.vote_average.toFixed(1)}</p>
