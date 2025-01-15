@@ -1,4 +1,4 @@
-import { MovieType } from '@/utils/types';
+/* import { Type } from '@/utils/types';
 import { fetchTrendingMovies } from '@/utils/api';
 
 export async function TrendingMovies({title}: {title: string}) {
@@ -10,7 +10,7 @@ export async function TrendingMovies({title}: {title: string}) {
         {title}
       </h2>
       <ol className="space-y-4 max-w-2xl mx-auto">
-        {movies.results.map((movie: MovieType) => (
+        {movies.results.map((movie: Type) => (
           <li key={movie.id} className="bg-white rounded-lg shadow-md p-4">
             <div className="space-y-2">
               <p className="text-sm font-semibold">{movie.title}</p>
@@ -20,7 +20,7 @@ export async function TrendingMovies({title}: {title: string}) {
       </ol>
     </section>
   );
-}
+} */
 
 
 
