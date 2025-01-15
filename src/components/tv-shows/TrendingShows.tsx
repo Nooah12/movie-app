@@ -39,11 +39,11 @@ export async function TrendingShows ({ listTitle, fetchData }: ListProps) {
         <h2 className="text-3xl font-bold mb-6 text-center text-slate-800">
           {listTitle}
         </h2>
-        <ol className="max-w-2xl w-full mx-auto rounded-lg bg-white">
+        <ol className="max-w-2xl w-full mx-auto p-4 rounded-lg bg-white">
           {items.results.slice(0, 10).map((item: Type, index: number) => (
-            <li key={item.id} className="p-2">
-              <div className="space-y-2 flex items-center gap-4 p-1 bg-gray-100 shadow-md">
-                <span className="text-sm">{index +1}</span>
+            <li key={item.id} className="py-0.5">
+              <div className="flex items-center gap-4 bg-gray-100 shadow-md rounded-lg px-2">
+                <span className="text-sm ml-2">{index +1}</span>
                 <Image 
                         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
                         alt={item.title || item.name || "Movie poster"}
