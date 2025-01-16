@@ -28,15 +28,17 @@ export default async function Home({searchParams}: { searchParams: {genre: strin
 
 //import { TrendingMovies } from '@/components/movies/TrendingMovies';
 
-import { TrendingShows } from '@/components/tv-shows/TrendingShows';
+import Hero from '@/components/hero/Hero';
+import { TrendingList } from '@/components/TrendingList';
 import { fetchTrendingShows, fetchTrendingMovies } from '@/utils/api';
 
 export default function Home() {
   return (
     <main className='flex-grow'>
+      <Hero />
       {/* <TrendingMovies title={'Trending Movies'} /> */}
-      <TrendingShows listTitle={'Trending Movies'} fetchData={fetchTrendingMovies} />
-      <TrendingShows listTitle={'Trending Shows'} fetchData={fetchTrendingShows} />
+      <TrendingList listTitle={'Trending Movies'} fetchData={fetchTrendingMovies} />
+      <TrendingList listTitle={'Trending Shows'} fetchData={fetchTrendingShows} />
     </main>
   )
 }

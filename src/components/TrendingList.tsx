@@ -1,4 +1,3 @@
-import { fetchTrendingMovies, fetchTrendingShows } from "@/utils/api";
 import { Type } from '@/utils/types';
 import Image from "next/image";
 
@@ -24,14 +23,20 @@ import Image from "next/image";
 } */
 
 
+// pages for pagination, later mby?
+interface ApiResponse {
+  results: Type[];
+  page?: number;
+  total_pages?: number;
+  total_results?: number;
+}
 
 interface ListProps {
     listTitle: string;
-    //items: any[];
-    fetchData: () => Promise<any>;
+    fetchData: () => Promise<ApiResponse>;
   }
 
-export async function TrendingShows ({ listTitle, fetchData }: ListProps) {
+export async function TrendingList ({ listTitle, fetchData }: ListProps) {
     const items = await fetchData();
 
     return (

@@ -3,7 +3,6 @@ import "./globals.css";
 //import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import Hero from '@/components/hero/Hero';
 
 export const metadata: Metadata = {
   title: "Movie App",
@@ -19,10 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={``}>
         {/* <Header /> */}
-        <header className="bg-transparent">
+        <header className="">
           <Navbar />
         </header>
-        <Hero />
         {children}
         <Footer />
       </body>
