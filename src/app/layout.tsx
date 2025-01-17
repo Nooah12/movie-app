@@ -3,6 +3,7 @@ import "./globals.css";
 //import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { QueryClientProvider } from "@/provider/query-client-provider";
 
 export const metadata: Metadata = {
   title: "Movie App",
@@ -17,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={``}>
-        {/* <Header /> */}
-        <header className="">
-          <Navbar />
-        </header>
-        {children}
-        <Footer />
+        <QueryClientProvider>
+          {/* <Header /> */}
+          <header className="">
+            <Navbar />
+          </header>
+          {children}
+          <Footer />
+        </QueryClientProvider>
       </body>
     </html>
   );

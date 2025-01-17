@@ -1,4 +1,5 @@
 export interface Type {
+    map(arg0: (result: Type) => import("react").JSX.Element): import("react").ReactNode;
     id: number;
     title: string;
     original_title: string;
