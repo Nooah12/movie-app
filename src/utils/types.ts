@@ -14,8 +14,11 @@ export interface Type {
     adult: boolean;
     video: boolean;
     genre_ids: number[];
-    media_type: 'movie' | 'tv';
+    media_type: 'movie' | 'tv' | 'person';
+    //tv
     name: string;
+    original_name: string;
     first_air_date: string;
     origin_country: string[];
+    profile_path: string;
   }

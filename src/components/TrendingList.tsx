@@ -51,7 +51,7 @@ export async function TrendingList ({ listTitle, fetchData }: ListProps) {
                 <span className="text-sm w-4 text-center">{index +1}</span>
                 <Image 
                         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
-                        alt={item.title || item.name || "Movie poster"}
+                        alt={item.title || item.name || "poster"}
                         width={0}
                         height={0}
                         sizes="100vw"

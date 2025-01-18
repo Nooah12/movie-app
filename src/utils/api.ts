@@ -56,14 +56,22 @@ export async function fetchMovieDetails(movieId: string) {
   return res.json();
 }
 
-export async function fetchMovies(searchTerm: string) {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${searchTerm}&language=en-US&page=1&include_adult=false`
-  );
+export async function fetchSearchResults(searchTerm: string) {
+  // Step 2.1: Encode the search term
+  const encodedSearchTerm = encodeURIComponent(searchTerm.trim());
 
+  // Step 2.2: Construct the API URL
+  const url = `https://api.themoviedb.org/3/search/multi?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${encodedSearchTerm}&include_adult=false&language=en-US&page=1`;
+
+  // Step 2.3: Perform the fetch
+  const res = await fetch(url);
+
+  // Step 2.4: Handle response errors
   if (!res.ok) {
-    throw new Error('Failed to fetch movies');
+    console.error('Fetch failed:', res.status, res.statusText);
+    throw new Error('Failed to fetch search results');
   }
 
+  // Step 2.5: Return the parsed JSON data
   return res.json();
 }
