@@ -9,17 +9,6 @@ import { Type } from "@/utils/types"
 
 export const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
-
-/*   const { data } = useQuery({
-    queryKey: ['search', searchTerm],
-    queryFn: async () => {
-      if (!searchTerm || searchTerm.length < 3) return { results: [] };
-      return fetchSearchResults(searchTerm); // Call the function created earlier
-    },
-    enabled: searchTerm.length >= 3, // Prevent queries for short terms
-  }); */
-
-
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   // Debounce the searchTerm
@@ -86,13 +75,13 @@ export const SearchBar = () => {
                     </div>
                   )}
                   <div>
-                    <p className="font-medium text-sm">
+                    <h3 className="font-medium text-sm">
                       {result.title || result.name}
-                    </p>
-                    <p className="text-xs text-gray-500 capitalize">
-                      {result.media_type} •{' '}
-                      {result.release_date || result.first_air_date}
-                    </p>
+                    </h3>
+                    <div className="text-xs text-gray-500 capitalize flex gap-3">
+                      <span>{(result.release_date || result.first_air_date)?.slice(0, 4)}</span> <span>•</span>
+                      <span>{result.media_type}</span>
+                      </div>
                   </div>
                 </div>
               </Link>
