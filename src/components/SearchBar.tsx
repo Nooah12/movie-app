@@ -2,37 +2,47 @@
 import { fetchSearchResults } from "@/utils/api"
 import { useQuery } from "@tanstack/react-query"
 import { Search } from 'lucide-react'
-import Image from "next/image"
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { Type } from "@/utils/types"
 
+
 export const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-
-  // Debounce the searchTerm
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 300); // 300ms delay
-
-    return () => clearTimeout(timer); // Cleanup timer
-  }, [searchTerm]);
-
+  const pathname = usePathname()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
+  
   const { data } = useQuery({
-    queryKey: ['search', debouncedSearchTerm],
+    queryKey: ['search', searchTerm],
     queryFn: async () => {
-      if (!debouncedSearchTerm || debouncedSearchTerm.length < 2) return { results: [] };
-      return fetchSearchResults(debouncedSearchTerm);
+      if (!searchTerm || searchTerm.length < 2) return { results: [] };
+      
+      const data = await fetchSearchResults(searchTerm);
+      return data;
     },
-    enabled: debouncedSearchTerm.length >= 2, // Only query if term is valid
-  });
+    enabled: searchTerm.length >= 2
+  })
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!event.target || !(event.target as HTMLElement).closest('#search-bar')) {
+        setIsOpen(false);
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
-  // Render the search bar
+  useEffect(() => {
+    setSearchTerm('')
+    setIsOpen(false)
+  }, [pathname]) 
+
   return (
-    <div className='relative w-full max-w-lg'>
+    <div id="search-bar" className='relative w-full max-w-lg'>
       <div className='flex relative w-full items-center gap-2 rounded-full bg-white px-4 py-2 text-zinc-400'>
         <label htmlFor='search'>
           <Search size={20} />
@@ -41,13 +51,15 @@ export const SearchBar = () => {
           id='search'
           type='text'
           value={searchTerm}
-          placeholder='Search movies, shows, actors...'
+          placeholder='search...'
           className='w-full text-zinc-800 outline-none'
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          onFocus={() => setIsOpen(true)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
         />
-        {data?.results && (
+        {isOpen && data?.results && (
           <div className={searchResultClasses}>
-            {data.results.map((result: Type) => (
+            {data.results.slice(0, 5).map((result: Type) => (
               <Link
                 key={result.id}
                 href={
@@ -88,16 +100,16 @@ export const SearchBar = () => {
             ))}
           </div>
         )}
-        {data?.results?.length === 0 && searchTerm.length >= 2 && (
+        {data?.results && data.results.length === 0 && searchTerm.length >= 2 && (
           <div className={searchResultClasses}>
-            <div className="ml-4">No results found</div>
+            <div className='ml-4'>No movies found</div>
           </div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const searchResultClasses =
-  'absolute top-[calc(100%+.5rem)] flex w-full flex-col gap-2 rounded-2xl bg-white py-4 shadow-md';
-const searchResultItemClasses = 'w-full px-4 py-2 hover:bg-slate-50';
+  'absolute top-[calc(100%+.5rem)] flex w-full flex-col gap-2 rounded-2xl bg-white py-4 shadow-md'
+const searchResultItemClasses = 'w-full px-4 py-2 hover:bg-slate-50'
