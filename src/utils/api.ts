@@ -56,6 +56,25 @@ export async function fetchMovieDetails(movieId: string) {
   return res.json();
 }
 
+// Add error handling to your API call
+export const fetchShowDetails = async (id: string) => {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
+    );
+    
+    if (!res.ok) {
+      throw new Error(`Failed to fetch show: ${res.status}`);
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching show details:', error);
+    throw error;
+  }
+};
+
+
 export async function fetchSearchResults(searchTerm: string) {
   // Step 2.1: Encode the search term
   const encodedSearchTerm = encodeURIComponent(searchTerm.trim());
