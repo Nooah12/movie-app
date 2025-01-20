@@ -40,14 +40,14 @@ export async function TrendingList ({ listTitle, fetchData }: ListProps) {
     const items = await fetchData();
 
     return (
-        <section className="flex flex-col bg-slate-400 flex-grow p-6">
+        <section className="flex flex-col flex-grow p-6">
         <h2 className="text-3xl font-bold mb-6 text-center text-slate-800">
           {listTitle}
         </h2>
         <ol className="max-w-2xl w-full mx-auto p-4 rounded-lg bg-white">
           {items.results.slice(0, 10).map((item: Type, index: number) => (
             <li key={item.id} className="py-0.5">
-              <div className="flex items-center gap-4 bg-gray-100 shadow-md rounded-lg px-2">
+              <div className="flex items-center gap-4 bg-gray-100 text-black shadow-md rounded-lg px-2">
                 <span className="text-sm w-4 text-center">{index +1}</span>
                 <Image 
                         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 

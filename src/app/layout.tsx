@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={``}>
+      <body className={`bg-[#020916] text-white`}>
         <QueryClientProvider>
           {/* <Header /> */}
           <header className="">
