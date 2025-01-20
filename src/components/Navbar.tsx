@@ -91,7 +91,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className='bg-black bg-transparent flex justify-between items-center h-24 mx-auto px-4 text-white'>
+    <div className='bg-black flex justify-between items-center h-24 mx-auto px-4 text-white'>
       <h1 className='w-full text-3xl font-bold text-[#00df9a]'>REACT.</h1>
 
       {/* Desktop Navigation */}

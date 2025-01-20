@@ -4,7 +4,7 @@ import Card from '@/components/Card';
 
 export default async function ShowsPage() {
   const response = await fetchTrendingShows();
-  const trendingShows = response.results; // Access the results array from the response
+  const trendingShows = response.results;
 
   return (
     <main>
