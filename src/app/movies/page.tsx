@@ -4,7 +4,7 @@ import Card from '@/components/Card';
 
 export default async function MoviesPage() {
   const response = await fetchTrendingMovies();
-  const trendingMovies = response.results; // Access the results array from the response
+  const trendingMovies = response.results;
 
   return (
     <main>

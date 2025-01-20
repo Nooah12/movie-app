@@ -2,11 +2,9 @@ import { fetchShowDetails } from '@/utils/api';
 import Image from 'next/image';
 
 export default async function ShowPage({ params }: { params: {id: string} }) {
-  //const movieId = params.id; // warning in consol ??
-  const { id } = params; // warning in consol ??
-  console.log('Show ID:', id);
+  const { id } = params; 
   const show = await fetchShowDetails(id)
-  console.log('Show data:', show);
+
   return (
     <main className='flex flex-col flex-grow'>
       <div className='w-full'>
