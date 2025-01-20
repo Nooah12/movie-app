@@ -15,16 +15,17 @@ export default function Card({ result }: {result: Type}) {
             result.poster_path || result.backdrop_path
           }`}
           alt='card'
-          width={300}
+          width={350}
           height={400}
-          className='sm:rounded-t-lg group-hover:opacity-75 transition-opacity duration-300'
+          className='rounded-md group-hover:opacity-75 transition-opacity duration-300'
         ></Image>
         <div className='p-2 min-w-0'>
           <h2 className='text-sm font-medium truncate'>
             {result.title || result.name}
           </h2>
           <p className='flex items-center text-sm'>
-            {result.release_date.slice(0,4) || result.first_air_date}
+            {/* {result.release_date.slice(0,4) || result.first_air_date.slice(0,4)} */}
+            {(result.release_date || result.first_air_date).slice(0,4)}
             <FiThumbsUp className='h-5 mr-1 ml-auto' />
             {result.vote_count}
           </p>
