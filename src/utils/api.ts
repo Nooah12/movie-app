@@ -43,6 +43,29 @@ export const fetchTopRatedMovies = async () => {
 
     return res.json();
 };
+
+/* export const fetchTopRatedMovies = async (filters: {
+  genres?: string[];
+  languages?: string[];
+  yearRange?: number[];
+  rating?: number;
+}) => {
+  const genreQuery = filters.genres?.length ? `&with_genres=${filters.genres.join(",")}` : "";
+  const languageQuery = filters.languages?.length ? `&with_original_language=${filters.languages.join(",")}` : "";
+  const yearRangeQuery =
+    filters.yearRange?.length === 2 ? `&primary_release_date.gte=${filters.yearRange[0]}-01-01&primary_release_date.lte=${filters.yearRange[1]}-12-31` : "";
+  const ratingQuery = filters.rating ? `&vote_average.gte=${filters.rating}` : "";
+
+  const response = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&sort_by=popularity.desc${genreQuery}${languageQuery}${yearRangeQuery}${ratingQuery}`
+  );
+  return response.json();
+}; */
+
+
+
+
+
   
 export async function fetchMovieDetails(movieId: string) {
   const res = await fetch(

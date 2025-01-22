@@ -8,7 +8,6 @@ import { GenreType } from "@/utils/types";
 const Slider = dynamic(() => import('rc-slider'), {
   ssr: false,
 });
-
 import "rc-slider/assets/index.css";
 
 interface MediaFilterProps {
@@ -105,7 +104,6 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
         const genreData = await genreResponse.json();
         const languageData = await languageResponse.json();
   
-        // Map genre names to genreOptions
         setGenreOptions(genreData.genres);
         setLanguageOptions(languageData.map((lang: { english_name: string }) => lang.english_name));
 
@@ -248,7 +246,7 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
             </div>
           </div>
 
-          {/* Right Section - Sliders */}
+          {/*  Sliders */}
           <div className="lg:w-1/2 space-y-6">
             {/* Year Range Slider */}
             <div>
