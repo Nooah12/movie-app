@@ -21,4 +21,10 @@ export interface Type {
     first_air_date: string;
     origin_country: string[];
     profile_path: string;
-  }
+}
+
+export interface GenreType {
+    toLowerCase(): unknown;
+    id: number;
+    name: string;
+}
