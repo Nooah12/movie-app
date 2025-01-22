@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from "react";
-import { FiX, FiChevronDown } from "react-icons/fi";
+import { FiChevronDown } from "react-icons/fi";
 import dynamic from 'next/dynamic';
 import { GenreType } from "@/utils/types";
 
@@ -30,7 +30,6 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [genreSearch, setGenreSearch] = useState("");
   const [languageSearch, setLanguageSearch] = useState("");
-
   const [genreOptions, setGenreOptions] = useState<GenreType[]>([]);
   const [languageOptions, setLanguageOptions] = useState<string[]>([]);
 
@@ -93,11 +92,6 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
     });
   }, [genres, languages, yearRange, rating, onFilterChange]);
 
-
-
-
-
-
   useEffect(() => {
     const fetchFilterOptions = async () => {
       try {
@@ -112,15 +106,9 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
         const languageData = await languageResponse.json();
   
         // Map genre names to genreOptions
-        //setGenreOptions(genreData.genres.map((genre: { name: string }) => genre.name));
-        setGenreOptions(genreData.genres);  // This already has the correct format {id, name}
-        
-        // Extract language names (use appropriate key from TMDB language response)
+        setGenreOptions(genreData.genres);
         setLanguageOptions(languageData.map((lang: { english_name: string }) => lang.english_name));
 
-              // Debug logs
-      console.log('Genres fetched:', genreData.genres);
-      console.log('Languages fetched:', languageData);
       } catch (error) {
         console.error("Failed to fetch filter options:", error);
       }
@@ -128,9 +116,6 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
   
     fetchFilterOptions();
   }, []);
-  
-  
-
 
   return (
     <div className=" bg-background p-4 font-inter">
