@@ -94,10 +94,10 @@ export default function HeroSlider() {
 
         {/* Content Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent rounded-b-xl">
-          <h2 className="text-4xl font-bold text-white mb-2">
+          <h2 className="md:text-xl xl:text-4xl font-bold text-white mb-2">
             {currentItem.title || currentItem.name}
           </h2>
-          <p className="text-gray-200 line-clamp-2 mb-2 max-w-2xl">
+          <p className="text-sm text-gray-200 line-clamp-2 mb-2 max-w-2xl">
             {currentItem.overview}
           </p>
           <div className="flex items-center gap-2">
@@ -108,12 +108,26 @@ export default function HeroSlider() {
           </div>
           <Link 
               href={getMediaUrl(currentItem)}
-              className="inline-flex items-center px-4 py-2 
-                         bg-[#beff46] hover:bg-[#a8e83d] 
-                         text-black font-semibold rounded-lg 
-                         transition-colors duration-200"
+              className="text-sm md:text-base inline-flex items-center px-2 py-1.5 md:px-4 md:py-2
+                bg-[#beff46] hover:bg-[#a8e83d] 
+                text-black font-semibold rounded-lg 
+                transition-all duration-200
+                hover:scale-105 active:scale-95 font-roboto"
             >
-              View Details
+              Details
+            <svg 
+                className="w-4 h-4 ml-2" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+            >
+                <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M9 5l7 7-7 7" 
+                />
+            </svg>
             </Link>
         </div>
       </div>
