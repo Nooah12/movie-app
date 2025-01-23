@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+//import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 interface MediaItem {
@@ -41,24 +41,16 @@ export default function HeroSlider() {
     fetchTrending();
   }, []);
 
-  const prevSlide = (): void => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + mediaItems.length) % mediaItems.length
-    );
-  };
-
-  const nextSlide = (): void => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex + 1) % mediaItems.length
-    );
-  };
+  const nextSlide = useCallback((): void => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % mediaItems.length);
+  }, [mediaItems.length]); 
 
   useEffect(() => {
     if (!isHovered && mediaItems.length > 0) {
       const interval = setInterval(nextSlide, 5000);
       return () => clearInterval(interval);
     }
-  }, [isHovered, mediaItems.length]);
+  }, [isHovered, mediaItems.length, nextSlide]);
 
   if (isLoading) {
     return <div className="h-[460px] bg-gray-900 animate-pulse"></div>;
@@ -76,9 +68,9 @@ export default function HeroSlider() {
   };
 
   return (
-    <div className="relative w-full mx-auto mt-4">
+    <div className="relative w-full mx-auto">
       <div
-        className="relative h-[460px] mx-12 group"
+        className="relative h-56 md:h-96 lg:h-[33rem] group"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -88,16 +80,16 @@ export default function HeroSlider() {
           alt={currentItem.title || currentItem.name || "Media"}
           layout="fill"
           objectFit="cover"
-          className="rounded-xl brightness-75"
+          className="brightness-75"
           priority
         />
 
         {/* Content Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent rounded-b-xl">
+        <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
           <h2 className="md:text-xl xl:text-4xl font-bold text-white mb-2">
             {currentItem.title || currentItem.name}
           </h2>
-          <p className="text-sm text-gray-200 line-clamp-2 mb-2 max-w-2xl">
+          <p className="hidden md:block text-xs lg:text-sm text-gray-200 line-clamp-2 mb-2 md:max-w-md xl:max-w-xl">
             {currentItem.overview}
           </p>
           <div className="flex items-center gap-2">
@@ -109,7 +101,7 @@ export default function HeroSlider() {
           <Link 
               href={getMediaUrl(currentItem)}
               className="text-sm md:text-base inline-flex items-center px-2 py-1.5 md:px-4 md:py-2
-                bg-[#beff46] hover:bg-[#a8e83d] 
+                bg-[#00DF9A] hover:bg-[#00EBA7] 
                 text-black font-semibold rounded-lg 
                 transition-all duration-200
                 hover:scale-105 active:scale-95 font-roboto"
@@ -133,7 +125,7 @@ export default function HeroSlider() {
       </div>
 
       {/* Navigation Buttons */}
-      <button
+{/*       <button
         className="absolute left-0 top-1/2 transform h-[459px] rounded-xl 
                    hover:bg-black/20 mx-1 -mt-[10px] -translate-y-1/2 
                    bg-black/10 text-white p-2 group transition-all"
@@ -148,7 +140,7 @@ export default function HeroSlider() {
         onClick={nextSlide}
       >
         <ChevronRight className="text-white/70 group-hover:text-white" />
-      </button>
+      </button> */}
 
       {/* Indicators */}
       <div className="flex justify-center mt-4">
@@ -157,9 +149,9 @@ export default function HeroSlider() {
             key={index}
             onClick={() => setCurrentIndex(index)}
             className={`h-1 w-10 mx-1 transition-all duration-500 ease-in-out
-                       ${index === currentIndex 
-                         ? "bg-[#beff46] rounded-xl" 
-                         : "bg-gray-300 rounded-xl"}`}
+               ${index === currentIndex 
+                ? "bg-[#beff46] rounded-xl" 
+                : "bg-gray-300 rounded-xl"}`}
           />
         ))}
       </div>
