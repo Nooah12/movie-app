@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-//import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 interface MediaItem {
@@ -22,7 +21,6 @@ export default function HeroSlider() {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Fetch trending movies/shows
   useEffect(() => {
     const fetchTrending = async () => {
       try {
@@ -123,24 +121,6 @@ export default function HeroSlider() {
             </Link>
         </div>
       </div>
-
-      {/* Navigation Buttons */}
-{/*       <button
-        className="absolute left-0 top-1/2 transform h-[459px] rounded-xl 
-                   hover:bg-black/20 mx-1 -mt-[10px] -translate-y-1/2 
-                   bg-black/10 text-white p-2 group transition-all"
-        onClick={prevSlide}
-      >
-        <ChevronLeft className="text-white/70 group-hover:text-white" />
-      </button>
-      <button
-        className="absolute right-0 top-1/2 transform h-[459px] rounded-xl 
-                   hover:bg-black/20 mx-1 -mt-[10px] -translate-y-1/2 
-                   bg-black/10 text-white p-2 group transition-all"
-        onClick={nextSlide}
-      >
-        <ChevronRight className="text-white/70 group-hover:text-white" />
-      </button> */}
 
       {/* Indicators */}
       <div className="flex justify-center mt-4">

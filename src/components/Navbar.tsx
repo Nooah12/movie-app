@@ -87,7 +87,7 @@ const Navbar = () => {
     { id: 1, text: 'Home',  href: '/' },
     { id: 2, text: 'Movies', href: '/movies' },
     { id: 3, text: 'Shows', href: '/shows' },
-    { id: 4, text: 'Sign In', href: '/sign-in' },
+    { id: 4, text: 'Sign In', href: '/auth/sign-in' },
   ];
 
   return (
