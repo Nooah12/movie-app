@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const signUpAction = async (formData: FormData) => {
+/* export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const supabase = await createClient();
@@ -15,7 +15,7 @@ export const signUpAction = async (formData: FormData) => {
   if (!email || !password) {
     return encodedRedirect(
       "error",
-      "/sign-up",
+      "/auth/sign-up",
       "Email and password are required",
     );
   }
@@ -30,15 +30,60 @@ export const signUpAction = async (formData: FormData) => {
 
   if (error) {
     console.error(error.code + " " + error.message);
-    return encodedRedirect("error", "/sign-up", error.message);
+    return encodedRedirect("error", "/auth/sign-up", error.message);
   } else {
     return encodedRedirect(
       "success",
-      "/sign-up",
+      "/auth/sign-up",
       "Thanks for signing up! Please check your email for a verification link.",
     );
   }
+}; */
+
+
+export const signUpAction = async (formData: FormData) => {
+  const email = formData.get("email")?.toString();
+  const password = formData.get("password")?.toString();
+  const supabase = await createClient();
+  const origin = (await headers()).get("origin");
+
+  if (!email || !password) {
+    return redirect(`/auth/sign-up?error=${encodeURIComponent("Email and password are required")}`);
+  }
+
+  const { data: existingUser } = await supabase.auth.signInWithPassword({
+    email,
+    password: "dummy-password-to-check-existence"
+  });
+
+  if (existingUser?.user || (existingUser?.user === null)) {
+    return redirect(`/auth/sign-up?error=${encodeURIComponent("Email already registered")}`);
+  }
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    // Supabase will return specific errors for existing emails
+    if (error.message.toLowerCase().includes('email already registered')) {
+      return redirect(`/auth/sign-up?error=${encodeURIComponent("This email is already registered")}`);
+    }
+    
+    return redirect(`/auth/sign-up?error=${encodeURIComponent(error.message)}`);
+  }
+
+  return redirect(`/auth/sign-up?success=${encodeURIComponent("Check your email to confirm your account")}`);
 };
+
+
+
+
+
 
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
@@ -51,10 +96,10 @@ export const signInAction = async (formData: FormData) => {
   });
 
   if (error) {
-    return encodedRedirect("error", "/sign-in", error.message);
+    return encodedRedirect("error", "/auth/sign-in", error.message);
   }
 
-  return redirect("/protected");
+  return redirect("/");
 };
 
 
