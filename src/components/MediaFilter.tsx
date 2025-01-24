@@ -116,8 +116,8 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
   }, []);
 
   return (
-    <div className=" bg-background p-4 font-inter">
-      <div className="max-w-7xl mx-auto bg-card rounded-lg shadow-sm p-6">
+    <div className=" bg-[#020916 p-4 font-inter">
+      <div className="max-w-7xl mx-auto bg-[#f3f3f5] rounded-lg shadow-sm p-6">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Section - Dropdowns */}
           <div className="lg:w-1/2 space-y-4">
