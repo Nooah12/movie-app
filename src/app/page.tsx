@@ -11,8 +11,10 @@ export default function Home() {
       <HeroSlider />
       {/* <Hero /> */}
       {/* <TrendingMovies title={'Trending Movies'} /> */}
-      <TrendingList listTitle={'Trending Movies'} fetchData={fetchTrendingMovies} />
-      <TrendingList listTitle={'Trending Shows'} fetchData={fetchTrendingShows} />
+      <section className='flex flex-col md:flex-row'>
+        <TrendingList listTitle={'Trending Movies'} fetchData={fetchTrendingMovies} />
+        <TrendingList listTitle={'Trending Shows'} fetchData={fetchTrendingShows} />
+      </section>
     </main>
   )
 }

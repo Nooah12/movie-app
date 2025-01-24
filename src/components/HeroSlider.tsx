@@ -66,7 +66,7 @@ export default function HeroSlider() {
   };
 
   return (
-    <div className="relative w-full mx-auto">
+    <div className="relative w-full mx-auto mb-8">
       <div
         className="relative h-56 md:h-96 lg:h-[33rem] group"
         onMouseEnter={() => setIsHovered(true)}
@@ -90,12 +90,6 @@ export default function HeroSlider() {
           <p className="hidden md:block text-xs lg:text-sm text-gray-200 line-clamp-2 mb-2 md:max-w-md xl:max-w-xl">
             {currentItem.overview}
           </p>
-          <div className="flex items-center gap-2">
-            <span className="text-yellow-400">★</span>
-            <span className="text-white">
-              {currentItem.vote_average.toFixed(1)}
-            </span>
-          </div>
           <Link 
               href={getMediaUrl(currentItem)}
               className="text-sm md:text-base inline-flex items-center px-2 py-1.5 md:px-4 md:py-2

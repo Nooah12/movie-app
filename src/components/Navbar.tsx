@@ -5,10 +5,8 @@ import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { SearchBar } from './SearchBar';
 import { createClient } from '@/utils/supabase/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faArrowRightToBracket,
-  faArrowRightFromBracket,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightToBracket,faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons';
+//import Image from 'next/image';
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -53,8 +51,18 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="bg-black flex justify-between items-center h-24 mx-auto px-4 text-white">
-      <h1 className="w-full text-3xl font-bold text-[#00df9a]">REACT.</h1>
+    <div className="bg-black flex justify-between items-center h-20 mx-auto px-4 text-white">
+{/*       <Link href="/" className="flex items-center">
+      <Image 
+        src="/movieTime.jpg"
+        alt="Logo"
+        width={0}
+        height={0}
+        sizes="100vw"
+        className="min-w-40 h-auto"
+        priority // Add this if it's above the fold
+      />
+    </Link> */}
 
       {/* Desktop Navigation */}
       <ul className="hidden md:flex items-center">
@@ -68,10 +76,13 @@ const Navbar = () => {
             </Link>
           </li>
         ))}
+      </ul>
+      <div className='flex items-center gap-2'>
+        <SearchBar />
         {user ? (
           <button
             onClick={handleSignOut}
-            className="p-4 hover:bg-[#00df9a] rounded-xl m-2 cursor-pointer duration-300 hover:text-black flex items-center gap-2 w-full min-w-[120px]"
+            className="p-4 hover:bg-[#00df9a] rounded-xl m-2 cursor-pointer duration-300 hover:text-black flex items-center gap-2 min-w-[120px]"
           >
             <FontAwesomeIcon icon={faArrowRightFromBracket} className="w-4 h-4" />
             <span>Sign Out</span>
@@ -79,14 +90,13 @@ const Navbar = () => {
         ) : (
           <Link
             href="/auth/sign-in"
-            className="p-4 hover:bg-[#00df9a] rounded-xl m-2 cursor-pointer duration-300 hover:text-black flex items-center gap-2"
+            className="p-4 hover:bg-[#00df9a] rounded-xl m-2 cursor-pointer duration-300 hover:text-black flex items-center gap-2 min-w-[120px]"
           >
             <FontAwesomeIcon icon={faArrowRightToBracket} className="w-4 h-4" />
             <span>Sign In</span>
           </Link>
         )}
-      </ul>
-      <SearchBar />
+      </div>
 
       {/* Mobile Navigation Icon */}
       <div onClick={handleNav} className="block md:hidden">

@@ -42,6 +42,12 @@ export default async function MoviePage({ params }: { params: {id: string} }) {
 
 
 
+
+  
+
+
+
+
   // try & catch 
 
 /*   try {
