@@ -37,7 +37,7 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
     return genreOptions?.filter(genre =>
       genre?.name?.toLowerCase().includes(genreSearch.toLowerCase())
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [genreSearch, genreOptions]);
 
   const filteredLanguages = useMemo(() => {
@@ -45,7 +45,7 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
     return languageOptions.filter(language =>
       language.toLowerCase().includes(languageSearch.toLowerCase())
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [languageSearch, languageOptions]);
 
   const handleGenreSelect = (genre: string) => {
