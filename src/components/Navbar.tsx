@@ -6,11 +6,12 @@ import { SearchBar } from './SearchBar';
 import { createClient } from '@/utils/supabase/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightToBracket,faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons';
+import { User } from '@/utils/types';
 //import Image from 'next/image';
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User>(null);
   const supabase = createClient();
 
   useEffect(() => {
@@ -24,11 +25,18 @@ const Navbar = () => {
     fetchUser();
 
     // Listen for auth state changes
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null); // Update user on auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        setUser(session.user);
+      } else {
+        setUser(null);
+      }
     });
-
-    return () => subscription.unsubscribe(); // Cleanup listener
+  
+    return () => {
+      subscription.unsubscribe();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Toggle mobile menu

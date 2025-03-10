@@ -28,3 +28,9 @@ export interface GenreType {
     id: number;
     name: string;
 }
+
+export type User = {
+    id: string;
+    email?: string;
+    // add other user properties ?
+  } | null;
