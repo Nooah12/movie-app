@@ -1,5 +1,5 @@
 /* import { signUpAction } from "@/app/auth/sign-in/actions";
-import { FormMessage, Message } from "@/components/form-message"
+import { FormMessage, Message } from "@/components/FormMessage"
 import { SubmitButton } from "@/components/buttons/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

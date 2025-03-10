@@ -1,5 +1,6 @@
-import { fetchTrendingShows } from '@/utils/api';
 import Results from '@/components/Results';
+import { fetchTrendingShows } from '@/utils/api';
+
 
 export default async function ShowsPage() {
   const res = await fetchTrendingShows();

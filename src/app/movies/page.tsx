@@ -1,6 +1,6 @@
 import { fetchTopRatedMovies } from '@/utils/api';
-import Results from '@/components/Results';
 import MediaFilter from '@/components/MediaFilter';
+import Results from '@/components/Results';
 
 export default async function MoviesPage() {
   const res = await fetchTopRatedMovies();
