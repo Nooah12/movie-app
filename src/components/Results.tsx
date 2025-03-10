@@ -1,7 +1,7 @@
 import { Type } from '@/utils/types';
 import Card from './Card';
 
-export default function Results({ results }: { results: Type }) {
+export default function Results({results}: { results: Type }) {
   return (
     <section className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7'>
       {results.map((result: Type) => (
