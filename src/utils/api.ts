@@ -1,3 +1,5 @@
+import { Actor } from "./types";
+
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 export async function fetchTrendingMovies() {
@@ -70,7 +72,7 @@ export const fetchShowDetails = async (id: string) => {
   }
 };
 
-export const fetchActorDetails = async (actorId: string) => {
+export const fetchActorDetails = async (actorId: string): Promise<Actor> => {
   try {
     const res = await fetch(
       `https://api.themoviedb.org/3/person/${actorId}?api_key=${API_KEY}&language=en-US`,

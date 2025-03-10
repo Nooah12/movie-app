@@ -33,4 +33,12 @@ export type User = {
     id: string;
     email?: string;
     // add other user properties ?
-  } | null;
+} | null;
+
+export type Actor = {
+    profile_path: string;
+    name: string;
+    biography: string;
+    birthday: string;
+    known_for_department: string;
+  }

@@ -1,9 +1,10 @@
 import { fetchActorDetails } from '@/utils/api';
 import Image from 'next/image';
+import { Actor } from '@/utils/types';
 
 export default async function ActorPage({ params }: { params: {id: string} }) {
   const { id } = params;
-  const actor = await fetchActorDetails(id);
+  const actor: Actor = await fetchActorDetails(id);
 
   return (
     <main className='flex flex-col flex-grow'>
@@ -16,6 +17,7 @@ export default async function ActorPage({ params }: { params: {id: string} }) {
             alt={actor.name}
             className='rounded-lg'
             style={{ maxWidth: '100%', height: '100%' }}
+            priority
           />
           <div className='p-2'>
             <h2 className='text-lg mb-3 font-bold'>{actor.name}</h2>
