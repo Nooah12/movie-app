@@ -2,15 +2,14 @@ import { fetchActorDetails } from '@/utils/api';
 import Image from 'next/image';
 import { Actor } from '@/utils/types';
 
-interface ActorPageProps {
+/* interface ActorPageProps {
   params: {
     id: string;
   };
-}
+} */
 
 /* export default async function ActorPage({ params }: { params: {id: string} }) { */
-export default async function ActorPage({ params }: ActorPageProps) {
-  const { id } = params;
+export default async function ActorPage({ params }: { params: Readonly<{ id: string }> }) {  const { id } = params;
   const actor: Actor = await fetchActorDetails(id);
 
   if (!actor) {
