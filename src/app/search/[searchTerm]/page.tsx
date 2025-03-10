@@ -1,16 +1,18 @@
-import Results from "@/components/Results";
+/* import Results from "@/components/Results";
 
-import { fetchMovies } from "@/utils/api";
+import { fetchSearchResults } from "@/utils/api";
 
 export default async function SearchPage({params}: { params: {searchTerm: string} }) {
     const searchTerm = params.searchTerm;
-    const movies = await fetchMovies(searchTerm);
+    const search = await fetchSearchResults(searchTerm);
 
   return (
     <div>
-      {movies.results && movies.results.length ===
+      {search.results && search.results.length ===
         <h1 className='text-center pt-6'>No results found</h1>}
-      {movies.results && <Results results={movies.results} />}
+      {search.results && <Results results={search.results} />}
     </div>
   )
-}
+} */
+
+  // dont even need this I think

@@ -6,7 +6,7 @@ export default async function ShowsPage() {
   const trendingShows = res.results;
 
   return (
-    <main>
+    <main className='max-w-6xl mx-auto p-4'>
         <Results results={trendingShows} />
     </main>
   )

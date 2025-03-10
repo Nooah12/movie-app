@@ -69,7 +69,7 @@ export const SearchBar = () => {
                     ? `/movies/${result.id}`
                     : result.media_type === 'tv'
                     ? `/shows/${result.id}`
-                    : `/person/${result.id}`
+                    : `/actors/${result.id}`
                 }
                 className={searchResultItemClasses}
               >
@@ -104,7 +104,7 @@ export const SearchBar = () => {
         )}
         {data?.results && data.results.length === 0 && searchTerm.length >= 2 && (
           <div className={searchResultClasses}>
-            <div className='ml-4'>No movies found</div>
+            <div className='ml-4'>No results found</div>
           </div>
         )}
       </div>

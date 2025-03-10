@@ -7,7 +7,7 @@ export default async function MoviesPage() {
   const trendingMovies = res.results;
 
   return (
-    <main className=' max-w-6xl mx-auto p-4'>
+    <main className='max-w-6xl mx-auto p-4'>
       <MediaFilter />
       <Results results={trendingMovies} />
     </main>

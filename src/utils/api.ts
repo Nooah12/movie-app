@@ -70,6 +70,24 @@ export const fetchShowDetails = async (id: string) => {
   }
 };
 
+export const fetchActorDetails = async (actorId: string) => {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/person/${actorId}?api_key=${API_KEY}&language=en-US`,
+      { next: { revalidate: 3600 } }
+    );
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch actor: ${res.status}`);
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching actor details:', error);
+    throw error;
+  }
+};
+
 export async function fetchSearchResults(searchTerm: string) {
   // Step 2.1: Encode the search term
   const encodedSearchTerm = encodeURIComponent(searchTerm.trim());
