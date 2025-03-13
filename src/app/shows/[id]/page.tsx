@@ -1,7 +1,10 @@
 import { fetchShowDetails } from '@/utils/api';
 import Image from 'next/image';
 
-export default async function ShowPage({ params }: { params: {id: string} }) {
+type tParams = Promise<{ id: string }>;
+
+//export default async function ShowPage({ params }: { params: {id: string} }) {
+export default async function ShowPage({ params }: { params: tParams }) {
   const { id } = params; 
   const show = await fetchShowDetails(id)
 
