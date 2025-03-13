@@ -5,7 +5,7 @@ type tParams = Promise<{ id: string }>;
 
 //export default async function ShowPage({ params }: { params: {id: string} }) {
 export default async function ShowPage({ params }: { params: tParams }) {
-  const { id } = params; 
+  const { id } = await params;
   const show = await fetchShowDetails(id)
 
   return (

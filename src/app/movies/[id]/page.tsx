@@ -4,7 +4,6 @@ import Image from 'next/image';
 type tParams = Promise<{ id: string }>;
 
 export default async function MoviePage({ params }: { params: tParams }) {
-  //const movieId = params.id; // warning in consol ??
   const { id } = await params;
   const movie = await fetchMovieDetails(id)
 
