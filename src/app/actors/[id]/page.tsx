@@ -1,6 +1,8 @@
+'use client'
 import { fetchActorDetails } from '@/utils/api';
 import Image from 'next/image';
 import { Actor } from '@/utils/types';
+import { useState, useEffect } from 'react';
 
 interface ActorPageProps {
   params: {
@@ -10,9 +12,18 @@ interface ActorPageProps {
 
  //export default async function ActorPage({ params }: { params: {id: string} }) { 
 
-export default async function ActorPage({ params }: ActorPageProps) {
+export default function ActorPage({ params }: ActorPageProps) {
   const { id } = params;
-  const actor: Actor = await fetchActorDetails(id);
+  //const actor: Actor = await fetchActorDetails(id);
+  const [actor, setActor] = useState<Actor | null>(null);
+
+  useEffect (() => {
+    const fetchActor = async () => {
+      const actorData = await fetchActorDetails(id);
+      setActor(actorData);
+    };
+    fetchActor();
+  }, [id]);
 
   if (!actor) {
     return <div>Actor not found</div>;
