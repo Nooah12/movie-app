@@ -3,15 +3,15 @@ import { fetchActorDetails } from '@/utils/api';
 import Image from 'next/image';
 
 
-interface ActorPageProps {
+/* interface ActorPageProps {
   params: {
     id: string;
   };
-}
+} */
 
  //export default async function ActorPage({ params }: { params: {id: string} }) { 
 
-export default async function ActorPage({ params }: ActorPageProps) {
+export default async function ActorPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   //const actor: Actor = await fetchActorDetails(id);
  
