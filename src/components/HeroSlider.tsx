@@ -3,6 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+const API_KEY = process.env.TMDB_API_KEY;
+
 interface MediaItem {
   id: number;
   title?: string;
