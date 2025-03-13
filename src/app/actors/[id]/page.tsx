@@ -2,25 +2,14 @@
 import { fetchActorDetails } from '@/utils/api';
 import Image from 'next/image';
 
-
-/* interface ActorPageProps {
-  params: {
-    id: string;
-  };
-} */
-
-type tParams = Promise<{ id: string[] }>;
+type tParams = Promise<{ id: string }>;
 
  //export default async function ActorPage({ params }: { params: {id: string} }) { 
 
 export default async function ActorPage({ params }: { params: tParams }) {
   const { id } = await params;
-  //const actor: Actor = await fetchActorDetails(id);
- 
-  
   const actor = await fetchActorDetails(id);
      
-
   if (!actor) {
     return <div>Actor not found</div>;
   }

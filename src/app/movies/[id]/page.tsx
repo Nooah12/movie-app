@@ -1,9 +1,11 @@
 import { fetchMovieDetails } from '@/utils/api';
 import Image from 'next/image';
 
-export default async function MoviePage({ params }: { params: {id: string} }) {
+type tParams = Promise<{ id: string }>;
+
+export default async function MoviePage({ params }: { params: tParams }) {
   //const movieId = params.id; // warning in consol ??
-  const { id } = params; // warning in consol ??
+  const { id } = await params;
   const movie = await fetchMovieDetails(id)
 
   return (
