@@ -9,9 +9,11 @@ import Image from 'next/image';
   };
 } */
 
+type tParams = Promise<{ id: string[] }>;
+
  //export default async function ActorPage({ params }: { params: {id: string} }) { 
 
-export default async function ActorPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ActorPage({ params }: { params: tParams }) {
   const { id } = await params;
   //const actor: Actor = await fetchActorDetails(id);
  
