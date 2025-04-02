@@ -28,7 +28,7 @@ export default function Card({ result }: {result: Type}) {
             <FiStar className='h-5 mr-1 ml-auto' />
             {result.vote_average.toFixed(1)}
           </p>
-          <h2 className='text-sm font-medium truncate'>
+          <h2 className='text-sm font-medium truncate mb-4'>
             {result.title || result.name}
           </h2>
         </div>
