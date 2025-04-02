@@ -1,7 +1,7 @@
 import { Type } from '@/utils/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiThumbsUp } from 'react-icons/fi';
+import { FiStar } from 'react-icons/fi';
 
 export default function Card({ result }: {result: Type}) {
   return (
@@ -22,15 +22,15 @@ export default function Card({ result }: {result: Type}) {
             ></Image>
           </div>
         </div>
-        <div className='min-w-0 p-2'>
-          <h2 className='text-sm font-medium truncate mb-2'>
+        <div className='min-w-0 px-2'>
+          <p className='flex items-center text-xs text-gray-400 !font-extralight mb-2 w-11/12 m-auto'>
+            {(result.release_date || result.first_air_date).slice(0,4)}
+            <FiStar className='h-5 mr-1 ml-auto' />
+            {result.vote_average.toFixed(1)}
+          </p>
+          <h2 className='text-sm font-medium truncate'>
             {result.title || result.name}
           </h2>
-          <p className='flex items-center text-xs text-gray-400 !font-extralight'>
-            {(result.release_date || result.first_air_date).slice(0,4)}
-            <FiThumbsUp className='h-5 mr-1 ml-auto' />
-            {result.vote_count}
-          </p>
         </div>
       </Link>
     </div>
