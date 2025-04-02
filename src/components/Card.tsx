@@ -1,7 +1,7 @@
 import { Type } from '@/utils/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiStar } from 'react-icons/fi';
+import { AiFillStar } from 'react-icons/ai';
 
 export default function Card({ result }: {result: Type}) {
   return (
@@ -23,10 +23,9 @@ export default function Card({ result }: {result: Type}) {
           </div>
         </div>
         <div className='min-w-0 px-2'>
-          <p className='flex items-center text-xs text-gray-400 !font-extralight mb-2 w-11/12 m-auto'>
+          <p className='flex justify-between items-center text-xs text-gray-400 !font-extralight mb-2'>
+            <span className='flex items-center'><AiFillStar className='h-5 mr-1 text-yellow-400' />{result.vote_average.toFixed(1)}</span>
             {(result.release_date || result.first_air_date).slice(0,4)}
-            <FiStar className='h-5 mr-1 ml-auto' />
-            {result.vote_average.toFixed(1)}
           </p>
           <h2 className='text-sm font-medium truncate mb-4'>
             {result.title || result.name}
