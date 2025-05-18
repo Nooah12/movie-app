@@ -111,12 +111,12 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
   ];
 
   return (
-    <div className="bg-white p-4">
+    <div className="bg-white/10 p-4 rounded-lg shadow-md">
       <div className="max-w-7xl mx-auto rounded-lg shadow-lg p-6">
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="lg:w-1/2 space-y-4">
             <div className="dropdown-container relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-100 mb-2">
                 Genres {genres.length > 0 && `(${genres.length})`}
               </label>
               <div
@@ -148,7 +148,7 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
             </div>
 
             <div className="dropdown-container relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-100 mb-2">
                 Languages {languages.length > 0 && `(${languages.length})`}
               </label>
               <div
@@ -182,7 +182,7 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
 
           <div className="lg:w-1/2 space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-100 mb-2">
                 Year Range: {yearRange[0]} - {yearRange[1]}
               </label>
               <div className="px-2">
@@ -198,7 +198,7 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-100 mb-2">
                 Minimum Rating: {rating}
               </label>
               <div className="px-2">
