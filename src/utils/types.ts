@@ -24,7 +24,6 @@ export interface Type {
 }
 
 export interface GenreType {
-    toLowerCase(): unknown;
     id: number;
     name: string;
 }

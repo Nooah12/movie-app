@@ -111,7 +111,7 @@ export async function fetchSearchResults(searchTerm: string) {
 }
 
 export interface MovieFilters {
-  genres?: string[];
+  genres?: number[];
   languages?: string[];
   yearRange?: [number, number];
   rating?: number;

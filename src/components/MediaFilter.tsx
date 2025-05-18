@@ -17,7 +17,7 @@ interface MediaFilterProps {
 
 const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
   const currentYear = new Date().getFullYear();
-  const [genres, setGenres] = useState<string[]>([]);
+  const [genres, setGenres] = useState<number[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const [yearRange, setYearRange] = useState<[number, number]>([1920, currentYear]);
   const [rating, setRating] = useState<number>(5);
@@ -43,9 +43,9 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
     return () => clearTimeout(timeoutId);
   }, [currentFilters, onFilterChange]);
 
-  const handleGenreSelect = (genre: string) => {
+  const handleGenreSelect = (genreId: number) => {
     setGenres(prev =>
-      prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
+      prev.includes(genreId) ? prev.filter(g => g !== genreId) : [...prev, genreId]
     );
   };
 
@@ -78,25 +78,25 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
   }, []);
 
   const genresList: GenreType[] = [
-    { id: "28", name: "Action" },
-    { id: "12", name: "Adventure" },
-    { id: "16", name: "Animation" },
-    { id: "35", name: "Comedy" },
-    { id: "80", name: "Crime" },
-    { id: "99", name: "Documentary" },
-    { id: "18", name: "Drama" },
-    { id: "10751", name: "Family" },
-    { id: "14", name: "Fantasy" },
-    { id: "36", name: "History" },
-    { id: "27", name: "Horror" },
-    { id: "10402", name: "Music" },
-    { id: "9648", name: "Mystery" },
-    { id: "10749", name: "Romance" },
-    { id: "878", name: "Science Fiction" },
-    { id: "10770", name: "TV Movie" },
-    { id: "53", name: "Thriller" },
-    { id: "10752", name: "War" },
-    { id: "37", name: "Western" }
+    { id: 28, name: "Action" },
+    { id: 12, name: "Adventure" },
+    { id: 16, name: "Animation" },
+    { id: 35, name: "Comedy" },
+    { id: 80, name: "Crime" },
+    { id: 99, name: "Documentary" },
+    { id: 18, name: "Drama" },
+    { id: 10751, name: "Family" },
+    { id: 14, name: "Fantasy" },
+    { id: 36, name: "History" },
+    { id: 27, name: "Horror" },
+    { id: 10402, name: "Music" },
+    { id: 9648, name: "Mystery" },
+    { id: 10749, name: "Romance" },
+    { id: 878, name: "Science Fiction" },
+    { id: 10770, name: "TV Movie" },
+    { id: 53, name: "Thriller" },
+    { id: 10752, name: "War" },
+    { id: 37, name: "Western" }
   ];
 
   const languagesList = [
