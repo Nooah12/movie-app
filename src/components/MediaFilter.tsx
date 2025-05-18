@@ -13,9 +13,10 @@ import "rc-slider/assets/index.css";
 
 interface MediaFilterProps {
   onFilterChange?: (filters: MovieFilters) => void;
+  mediaType?: 'movie' | 'tv';
 }
 
-const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
+const MediaFilter = ({ onFilterChange, mediaType = 'movie' }: MediaFilterProps) => {
   const currentYear = new Date().getFullYear();
   const [genres, setGenres] = useState<number[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
@@ -77,7 +78,7 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const genresList: GenreType[] = [
+  const movieGenres: GenreType[] = [
     { id: 28, name: "Action" },
     { id: 12, name: "Adventure" },
     { id: 16, name: "Animation" },
@@ -99,6 +100,27 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
     { id: 37, name: "Western" }
   ];
 
+  const tvGenres: GenreType[] = [
+    { id: 10759, name: "Action & Adventure" },
+    { id: 16, name: "Animation" },
+    { id: 35, name: "Comedy" },
+    { id: 80, name: "Crime" },
+    { id: 99, name: "Documentary" },
+    { id: 18, name: "Drama" },
+    { id: 10751, name: "Family" },
+    { id: 10762, name: "Kids" },
+    { id: 9648, name: "Mystery" },
+    { id: 10763, name: "News" },
+    { id: 10764, name: "Reality" },
+    { id: 10765, name: "Sci-Fi & Fantasy" },
+    { id: 10766, name: "Soap" },
+    { id: 10767, name: "Talk" },
+    { id: 10768, name: "War & Politics" },
+    { id: 37, name: "Western" }
+  ];
+
+  const genresList = mediaType === 'tv' ? tvGenres : movieGenres;
+
   const languagesList = [
     { code: "en", name: "English" },
     { code: "es", name: "Spanish" },
@@ -109,6 +131,11 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
     { code: "ko", name: "Korean" },
     { code: "zh", name: "Chinese" }
   ];
+
+  // Clear genres when mediaType changes to prevent invalid genre selections
+  useEffect(() => {
+    clearGenres();
+  }, [mediaType]);
 
   return (
     <div className="bg-white/10 p-4 rounded-lg shadow-md">
@@ -215,7 +242,7 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
 
             <button
               onClick={clearAll}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="w-full py-2 px-4 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
             >
               Clear All Filters
             </button>

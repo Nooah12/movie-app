@@ -40,6 +40,19 @@ export async function fetchTopRatedMovies () {
 
     return res.json();
 };
+
+export async function fetchTopRatedShows () {
+  const res = await fetch(
+      `https://api.themoviedb.org/3/tv/top_rated?api_key=${API_KEY}&language=en-US&page=1`,
+      { next: { revalidate: 3600 } }
+  );
+
+  if (!res.ok) {
+      throw new Error('Failed to fetch top rated movies');
+  }
+
+  return res.json();
+};
   
 export async function fetchMovieDetails(movieId: string) {
   const res = await fetch(
@@ -147,6 +160,41 @@ export async function fetchFilteredMovies(filters?: MovieFilters) {
   
   if (!res.ok) {
     throw new Error('Failed to fetch filtered movies');
+  }
+  
+  return res.json();
+}
+
+export async function fetchFilteredShows(filters?: MovieFilters) {
+  const baseUrl = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&sort_by=popularity.desc`;
+  
+  const queryParams = [];
+  
+  if (filters?.genres?.length) {
+    queryParams.push(`with_genres=${filters.genres.join(',')}`);
+  }
+  
+  if (filters?.languages?.length) {
+    queryParams.push(`with_original_language=${filters.languages.join(',')}`);
+  }
+  
+  if (filters?.yearRange?.length === 2) {
+    queryParams.push(`first_air_date.gte=${filters.yearRange[0]}-01-01`);
+    queryParams.push(`first_air_date.lte=${filters.yearRange[1]}-12-31`);
+  }
+  
+  if (filters?.rating) {
+    queryParams.push(`vote_average.gte=${filters.rating}`);
+  }
+
+  const url = queryParams.length > 0 
+    ? `${baseUrl}&${queryParams.join('&')}` 
+    : baseUrl;
+
+  const res = await fetch(url, { next: { revalidate: 3600 } });
+  
+  if (!res.ok) {
+    throw new Error('Failed to fetch filtered shows');
   }
   
   return res.json();
