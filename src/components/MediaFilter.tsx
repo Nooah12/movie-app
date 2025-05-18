@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import dynamic from 'next/dynamic';
 import { GenreType } from "@/utils/types";
+import type { MovieFilters } from "@/utils/api";
 
 const Slider = dynamic(() => import('rc-slider'), {
   ssr: false,
@@ -11,12 +12,7 @@ const Slider = dynamic(() => import('rc-slider'), {
 import "rc-slider/assets/index.css";
 
 interface MediaFilterProps {
-  onFilterChange?: (filters: {
-    genres: string[];
-    languages: string[];
-    yearRange: number[];
-    rating: number;
-  }) => void;
+  onFilterChange?: (filters: MovieFilters) => void;
 }
 
 const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
@@ -27,29 +23,28 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
   const [rating, setRating] = useState<number>(5);
   const [isGenreOpen, setIsGenreOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
-  const [genreSearch, setGenreSearch] = useState("");
-  const [languageSearch, setLanguageSearch] = useState("");
-  const [genreOptions, setGenreOptions] = useState<GenreType[]>([]);
-  const [languageOptions, setLanguageOptions] = useState<string[]>([]);
 
-  const filteredGenres = useMemo(() => {
-    console.log('Filtering genres:', genreOptions); // Debug log
-    return genreOptions?.filter(genre =>
-      genre?.name?.toLowerCase().includes(genreSearch.toLowerCase())
-    );
-   
-  }, [genreSearch, genreOptions]);
+  // Memoize the current filter state
+  const currentFilters = useCallback(() => ({
+    genres,
+    languages,
+    yearRange,
+    rating
+  }), [genres, languages, yearRange, rating]);
 
-  const filteredLanguages = useMemo(() => {
-    console.log('Filtering languages:', languageOptions); // Debug log
-    return languageOptions.filter(language =>
-      language.toLowerCase().includes(languageSearch.toLowerCase())
-    );
-   
-  }, [languageSearch, languageOptions]);
+  // Debounced filter change handler
+  useEffect(() => {
+    if (!onFilterChange) return;
+
+    const timeoutId = setTimeout(() => {
+      onFilterChange(currentFilters());
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [currentFilters, onFilterChange]);
 
   const handleGenreSelect = (genre: string) => {
-    setGenres(prev => 
+    setGenres(prev =>
       prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
     );
   };
@@ -82,175 +77,112 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    onFilterChange?.({
-      genres,
-      languages,
-      yearRange,
-      rating
-    });
-  }, [genres, languages, yearRange, rating, onFilterChange]);
+  const genresList: GenreType[] = [
+    { id: "28", name: "Action" },
+    { id: "12", name: "Adventure" },
+    { id: "16", name: "Animation" },
+    { id: "35", name: "Comedy" },
+    { id: "80", name: "Crime" },
+    { id: "99", name: "Documentary" },
+    { id: "18", name: "Drama" },
+    { id: "10751", name: "Family" },
+    { id: "14", name: "Fantasy" },
+    { id: "36", name: "History" },
+    { id: "27", name: "Horror" },
+    { id: "10402", name: "Music" },
+    { id: "9648", name: "Mystery" },
+    { id: "10749", name: "Romance" },
+    { id: "878", name: "Science Fiction" },
+    { id: "10770", name: "TV Movie" },
+    { id: "53", name: "Thriller" },
+    { id: "10752", name: "War" },
+    { id: "37", name: "Western" }
+  ];
 
-  useEffect(() => {
-    const fetchFilterOptions = async () => {
-      try {
-        const genreResponse = await fetch(
-          `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
-        );
-        const languageResponse = await fetch(
-          `https://api.themoviedb.org/3/configuration/languages?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`
-        );
-  
-        const genreData = await genreResponse.json();
-        const languageData = await languageResponse.json();
-  
-        setGenreOptions(genreData.genres);
-        setLanguageOptions(languageData.map((lang: { english_name: string }) => lang.english_name));
-
-      } catch (error) {
-        console.error("Failed to fetch filter options:", error);
-      }
-    };
-  
-    fetchFilterOptions();
-  }, []);
+  const languagesList = [
+    { code: "en", name: "English" },
+    { code: "es", name: "Spanish" },
+    { code: "fr", name: "French" },
+    { code: "de", name: "German" },
+    { code: "it", name: "Italian" },
+    { code: "ja", name: "Japanese" },
+    { code: "ko", name: "Korean" },
+    { code: "zh", name: "Chinese" }
+  ];
 
   return (
-    <div className=" bg-[#020916 p-4 font-inter">
-      <div className="max-w-7xl mx-auto bg-[#f3f3f5] rounded-lg shadow-sm p-6">
+    <div className="bg-white p-4">
+      <div className="max-w-7xl mx-auto rounded-lg shadow-lg p-6">
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Left Section - Dropdowns */}
           <div className="lg:w-1/2 space-y-4">
-
-            {/* Genre Dropdown */}
             <div className="dropdown-container relative">
-              <label className="block text-sm font-body mb-2 text-foreground">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Genres {genres.length > 0 && `(${genres.length})`}
               </label>
               <div
-                className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:border-primary"
-                onClick={(e) => {
-                  e.stopPropagation(); // Add this
-                  setIsGenreOpen(!isGenreOpen);
-                  console.log('Genre dropdown clicked'); // Add this
-                }}
+                className="flex items-center justify-between p-3 bg-white border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500"
+                onClick={() => setIsGenreOpen(!isGenreOpen)}
               >
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-gray-600">
                   {genres.length ? `${genres.length} selected` : "Select genres"}
                 </span>
                 <FiChevronDown className={`transition-transform ${isGenreOpen ? "rotate-180" : ""}`} />
               </div>
               {isGenreOpen && (
-                <div className="absolute z-10 w-full mt-2 bg-card border rounded-lg shadow-lg">
-                  <div className="p-2">
-                    <input
-                      type="text"
-                      placeholder="Search genres..."
-                      className="w-full p-2 text-sm border rounded-md"
-                      value={genreSearch}
-                      onChange={(e) => setGenreSearch(e.target.value)}
-                    />
-                  </div>
-                  <div className="max-h-60 overflow-y-auto">
-                    {filteredGenres.map((genre: GenreType) => (
-                      <div
-                        key={genre.id}
-                        className="flex items-center px-4 py-2 hover:bg-accent cursor-pointer"
-                        onClick={() => handleGenreSelect(genre.name)}
-                      >
+                <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+                  <div className="p-2 max-h-60 overflow-y-auto">
+                    {genresList.map((genre) => (
+                      <label key={genre.id} className="flex items-center p-2 hover:bg-gray-50 cursor-pointer">
                         <input
                           type="checkbox"
-                          checked={genres.includes(genre.name)}
-                          onChange={() => {}}
+                          checked={genres.includes(genre.id)}
+                          onChange={() => handleGenreSelect(genre.id)}
                           className="mr-2"
                         />
-                        <span className="text-sm text-muted-foreground">{genre.name}</span>
-                        
-                      </div>
+                        <span className="text-gray-700">{genre.name}</span>
+                      </label>
                     ))}
                   </div>
-                  {genres.length > 0 && (
-                    <div className="p-2 border-t">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          clearGenres();
-                        }}
-                        className="text-sm text-destructive hover:text-destructive/90"
-                      >
-                        Clear genres
-                      </button>
-                    </div>
-                  )}
                 </div>
               )}
             </div>
 
-            {/* Language Dropdown */}
             <div className="dropdown-container relative">
-              <label className="block text-sm font-body mb-2 text-foreground">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Languages {languages.length > 0 && `(${languages.length})`}
               </label>
               <div
-                className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:border-primary"
+                className="flex items-center justify-between p-3 bg-white border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500"
                 onClick={() => setIsLanguageOpen(!isLanguageOpen)}
               >
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-gray-600">
                   {languages.length ? `${languages.length} selected` : "Select languages"}
                 </span>
                 <FiChevronDown className={`transition-transform ${isLanguageOpen ? "rotate-180" : ""}`} />
               </div>
               {isLanguageOpen && (
-                <div className="absolute z-10 w-full mt-2 bg-card border rounded-lg shadow-lg">
+                <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
                   <div className="p-2">
-                    <input
-                      type="text"
-                      placeholder="Search languages..."
-                      className="w-full p-2 text-sm border rounded-md"
-                      value={languageSearch}
-                      onChange={(e) => setLanguageSearch(e.target.value)}
-                    />
-                  </div>
-                  <div className="max-h-60 overflow-y-auto">
-                    {filteredLanguages.map((language) => (
-                      <div
-                        key={language}
-                        className="flex items-center px-4 py-2 hover:bg-accent cursor-pointer"
-                        onClick={() => handleLanguageSelect(language)}
-                      >
+                    {languagesList.map((language) => (
+                      <label key={language.code} className="flex items-center p-2 hover:bg-gray-50 cursor-pointer">
                         <input
                           type="checkbox"
-                          checked={languages.includes(language)}
-                          onChange={() => {}}
+                          checked={languages.includes(language.code)}
+                          onChange={() => handleLanguageSelect(language.code)}
                           className="mr-2"
                         />
-                        <span className="text-sm text-muted-foreground">{language}</span>
-                      </div>
+                        <span className="text-gray-700">{language.name}</span>
+                      </label>
                     ))}
                   </div>
-                  {languages.length > 0 && (
-                    <div className="p-2 border-t">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          clearLanguages();
-                        }}
-                        className="text-sm text-destructive hover:text-destructive/90"
-                      >
-                        Clear languages
-                      </button>
-                    </div>
-                  )}
                 </div>
               )}
             </div>
           </div>
 
-          {/*  Sliders */}
           <div className="lg:w-1/2 space-y-6">
-            {/* Year Range Slider */}
             <div>
-              <label className="block text-sm font-body mb-2 text-foreground">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Year Range: {yearRange[0]} - {yearRange[1]}
               </label>
               <div className="px-2">
@@ -265,15 +197,15 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
               </div>
             </div>
 
-            {/* Rating Slider */}
             <div>
-              <label className="block text-sm font-body mb-2 text-foreground">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Minimum Rating: {rating}
               </label>
               <div className="px-2">
                 <Slider
                   min={0}
                   max={10}
+                  step={0.5}
                   value={rating}
                   onChange={(value) => setRating(value as number)}
                   className="my-4"
@@ -281,10 +213,9 @@ const MediaFilter = ({ onFilterChange }: MediaFilterProps) => {
               </div>
             </div>
 
-            {/* Clear Filters Button */}
             <button
               onClick={clearAll}
-              className="w-full bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition-colors"
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Clear All Filters
             </button>

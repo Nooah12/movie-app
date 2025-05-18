@@ -110,25 +110,44 @@ export async function fetchSearchResults(searchTerm: string) {
   return res.json();
 }
 
+export interface MovieFilters {
+  genres?: string[];
+  languages?: string[];
+  yearRange?: [number, number];
+  rating?: number;
+}
 
-
-
-
-  /* export const fetchTopRatedMovies = async (filters: {
-    genres?: string[];
-    languages?: string[];
-    yearRange?: number[];
-    rating?: number;
-  }) => {
-    const genreQuery = filters.genres?.length ? `&with_genres=${filters.genres.join(",")}` : "";
-    const languageQuery = filters.languages?.length ? `&with_original_language=${filters.languages.join(",")}` : "";
-    const yearRangeQuery =
-      filters.yearRange?.length === 2 ? `&primary_release_date.gte=${filters.yearRange[0]}-01-01&primary_release_date.lte=${filters.yearRange[1]}-12-31` : "";
-    const ratingQuery = filters.rating ? `&vote_average.gte=${filters.rating}` : "";
+export async function fetchFilteredMovies(filters?: MovieFilters) {
+  const baseUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc`;
   
-    const response = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&sort_by=popularity.desc${genreQuery}${languageQuery}${yearRangeQuery}${ratingQuery}`
-    );
-    return response.json();
-  }; */
+  const queryParams = [];
   
+  if (filters?.genres?.length) {
+    queryParams.push(`with_genres=${filters.genres.join(',')}`);
+  }
+  
+  if (filters?.languages?.length) {
+    queryParams.push(`with_original_language=${filters.languages.join(',')}`);
+  }
+  
+  if (filters?.yearRange?.length === 2) {
+    queryParams.push(`primary_release_date.gte=${filters.yearRange[0]}-01-01`);
+    queryParams.push(`primary_release_date.lte=${filters.yearRange[1]}-12-31`);
+  }
+  
+  if (filters?.rating) {
+    queryParams.push(`vote_average.gte=${filters.rating}`);
+  }
+
+  const url = queryParams.length > 0 
+    ? `${baseUrl}&${queryParams.join('&')}` 
+    : baseUrl;
+
+  const res = await fetch(url, { next: { revalidate: 3600 } });
+  
+  if (!res.ok) {
+    throw new Error('Failed to fetch filtered movies');
+  }
+  
+  return res.json();
+}
