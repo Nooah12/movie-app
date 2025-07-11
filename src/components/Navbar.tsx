@@ -56,6 +56,7 @@ const Navbar = () => {
     { id: 1, text: 'Home', href: '/' },
     { id: 2, text: 'Movies', href: '/movies' },
     { id: 3, text: 'Shows', href: '/shows' },
+    ...(user ? [{ id: 4, text: 'Watchlist', href: '/watchlist' }] : []),
   ];
 
   return (

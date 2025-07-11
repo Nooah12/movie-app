@@ -2,6 +2,7 @@ import { Type } from '@/utils/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AiFillStar } from 'react-icons/ai';
+import WatchlistButton from './WatchlistButton';
 
 export default function Card({ result }: {result: Type}) {
   return (
@@ -20,6 +21,9 @@ export default function Card({ result }: {result: Type}) {
               fill
               className='rounded-md w-full h-auto object-cover group-hover:opacity-75 transition-opacity duration-300'
             ></Image>
+            <div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
+              <WatchlistButton item={result} />
+            </div>
           </div>
         </div>
         <div className='min-w-0 px-2'>
