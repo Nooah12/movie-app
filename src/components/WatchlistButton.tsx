@@ -5,6 +5,7 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { addToWatchlist, removeFromWatchlist, isInWatchlist } from '@/utils/watchlist'
 import { Type } from '@/utils/types'
 import { createClient } from '@/utils/supabase/client'
+import { User } from '@supabase/supabase-js'
 
 interface WatchlistButtonProps {
   item: Type
@@ -15,7 +16,7 @@ interface WatchlistButtonProps {
 export default function WatchlistButton({ item, className = '', onUpdate }: WatchlistButtonProps) {
   const [isInList, setIsInList] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
