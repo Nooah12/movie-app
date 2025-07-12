@@ -12,7 +12,11 @@ export default function ShowsPage() {
   const fetchShows = useCallback(async () => {
     try {
       const res = await fetchTopRatedShows();
-      setShows(res.results);
+      const showsWithType = res.results.map((show: Type) => ({
+        ...show,
+        media_type: 'tv' as const
+      }));
+      setShows(showsWithType);
     } catch (error) {
       console.error('Error fetching shows:', error);
     }
@@ -24,8 +28,29 @@ export default function ShowsPage() {
 
   const handleFilterChange = useCallback(async (filters: MovieFilters) => {
     try {
-      const res = await fetchFilteredShows(filters);
-      setShows(res.results);
+      // If all filters are at default values, show top-rated instead of filtered
+      const isDefaultFilters = (!filters.genres || filters.genres.length === 0) &&
+                              (!filters.languages || filters.languages.length === 0) &&
+                              (!filters.yearRange || (filters.yearRange[0] === 1920 && filters.yearRange[1] === new Date().getFullYear())) &&
+                              (!filters.rating || filters.rating === 5);
+      
+      if (isDefaultFilters) {
+        // Go back to top-rated shows
+        const res = await fetchTopRatedShows();
+        const showsWithType = res.results.map((show: Type) => ({
+          ...show,
+          media_type: 'tv' as const
+        }));
+        setShows(showsWithType);
+      } else {
+        // Apply filters
+        const res = await fetchFilteredShows(filters);
+        const showsWithType = res.results.map((show: Type) => ({
+          ...show,
+          media_type: 'tv' as const
+        }));
+        setShows(showsWithType);
+      }
     } catch (error) {
       console.error('Error filtering shows', error);
     }

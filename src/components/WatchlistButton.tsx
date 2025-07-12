@@ -30,7 +30,7 @@ export default function WatchlistButton({ item, className = '', onUpdate }: Watc
     }
     
     checkAuth()
-  }, [item.id, item.media_type, supabase.auth])
+  }, [item.id, item.media_type, supabase])
 
   const handleToggle = async (e: React.MouseEvent) => {
     e.preventDefault()

@@ -12,7 +12,11 @@ export default function MoviesPage() {
   const fetchMovies = useCallback(async () => {
     try {
       const res = await fetchTopRatedMovies();
-      setMovies(res.results);
+      const moviesWithType = res.results.map((movie: Type) => ({
+        ...movie,
+        media_type: 'movie' as const
+      }));
+      setMovies(moviesWithType);
     } catch (error) {
       console.error('Error fetching movies:', error);
     }
@@ -24,8 +28,29 @@ export default function MoviesPage() {
 
   const handleFilterChange = useCallback(async (filters: MovieFilters) => {
     try {
-      const res = await fetchFilteredMovies(filters);
-      setMovies(res.results);
+      // If all filters are at default values, show top-rated instead of filtered
+      const isDefaultFilters = (!filters.genres || filters.genres.length === 0) &&
+                              (!filters.languages || filters.languages.length === 0) &&
+                              (!filters.yearRange || (filters.yearRange[0] === 1920 && filters.yearRange[1] === new Date().getFullYear())) &&
+                              (!filters.rating || filters.rating === 5);
+      
+      if (isDefaultFilters) {
+        // Go back to top-rated movies
+        const res = await fetchTopRatedMovies();
+        const moviesWithType = res.results.map((movie: Type) => ({
+          ...movie,
+          media_type: 'movie' as const
+        }));
+        setMovies(moviesWithType);
+      } else {
+        // Apply filters
+        const res = await fetchFilteredMovies(filters);
+        const moviesWithType = res.results.map((movie: Type) => ({
+          ...movie,
+          media_type: 'movie' as const
+        }));
+        setMovies(moviesWithType);
+      }
     } catch (error) {
       console.error('Error filtering movies:', error);
     }

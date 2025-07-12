@@ -49,6 +49,7 @@ const Navbar = () => {
     await supabase.auth.signOut();
     setUser(null); // Reset user state
     setNav(false); // Close mobile menu
+    window.location.href = '/';
   };
 
   // Nav items

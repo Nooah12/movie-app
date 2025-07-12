@@ -5,14 +5,15 @@ import { getWatchlist, WatchlistItem } from '@/utils/watchlist'
 import { createClient } from '@/utils/supabase/client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { AiFillStar } from 'react-icons/ai'
+/* import { AiFillStar } from 'react-icons/ai' */
 import WatchlistButton from '@/components/WatchlistButton'
 import { Type } from '@/utils/types'
+import { User } from '@supabase/supabase-js'
 
 export default function Watchlist() {
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([])
   const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function Watchlist() {
     }
 
     checkAuthAndFetchWatchlist()
-  }, [])
+  }, [supabase])
 
   const handleWatchlistUpdate = async () => {
     // Refresh watchlist after item removal
@@ -72,7 +73,7 @@ export default function Watchlist() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
+    <div className="max-w-6xl mx-auto p-4 flex-grow">
       <h1 className="text-3xl font-bold mb-8">My Watchlist</h1>
       
       {watchlist.length === 0 ? (
@@ -85,14 +86,14 @@ export default function Watchlist() {
           {watchlist.map((item) => {
             // Convert WatchlistItem to Type for compatibility
             const movieItem: Type = {
-              id: item.movie_id,
-              title: item.movie_title,
-              name: item.movie_title,
+              id: item.tmdb_id,
+              title: item.title,
+              name: item.title,
               poster_path: item.poster_path,
               media_type: item.media_type as 'movie' | 'tv' | 'person',
               // Add other required fields with defaults
-              original_title: item.movie_title,
-              original_name: item.movie_title,
+              original_title: item.title,
+              original_name: item.title,
               original_language: '',
               overview: '',
               backdrop_path: null,
@@ -113,14 +114,14 @@ export default function Watchlist() {
               <div key={item.id} className="cursor-pointer mb-4">
                 <Link href={
                   item.media_type === 'tv' ? 
-                  `/shows/${item.movie_id}` :
-                  `/movies/${item.movie_id}`
+                  `/shows/${item.tmdb_id}` :
+                  `/movies/${item.tmdb_id}`
                 }>
                   <div className="group hover:shadow-slate-400 shadow-md rounded-md border-slate-400 m-2 transition-shadow duration-200">
                     <div className="aspect-[2/3] relative">
                       <Image
                         src={`https://image.tmdb.org/t/p/original/${item.poster_path}`}
-                        alt={item.movie_title}
+                        alt={item.title}
                         fill
                         className="rounded-md w-full h-auto object-cover group-hover:opacity-75 transition-opacity duration-300"
                       />
@@ -134,7 +135,7 @@ export default function Watchlist() {
                   </div>
                   <div className="min-w-0 px-2">
                     <h2 className="text-sm font-medium truncate mb-4">
-                      {item.movie_title}
+                      {item.title}
                     </h2>
                   </div>
                 </Link>

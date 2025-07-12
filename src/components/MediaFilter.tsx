@@ -22,6 +22,7 @@ const MediaFilter = ({ onFilterChange, mediaType = 'movie' }: MediaFilterProps) 
   const [languages, setLanguages] = useState<string[]>([]);
   const [yearRange, setYearRange] = useState<[number, number]>([1920, currentYear]);
   const [rating, setRating] = useState<number>(5);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const [isGenreOpen, setIsGenreOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
 
@@ -33,24 +34,33 @@ const MediaFilter = ({ onFilterChange, mediaType = 'movie' }: MediaFilterProps) 
     rating
   }), [genres, languages, yearRange, rating]);
 
-  // Debounced filter change handler
+  // Debounced filter change handler - only trigger when user actually changes filters
   useEffect(() => {
     if (!onFilterChange) return;
+    
+    // Don't trigger on initial mount, but do trigger after user interaction
+    if (!hasUserInteracted && genres.length === 0 && languages.length === 0 && 
+        yearRange[0] === 1920 && yearRange[1] === currentYear && 
+        rating === 5) {
+      return;
+    }
 
     const timeoutId = setTimeout(() => {
       onFilterChange(currentFilters());
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [currentFilters, onFilterChange]);
+  }, [currentFilters, onFilterChange, currentYear, genres.length, languages.length, yearRange, rating, hasUserInteracted]);
 
   const handleGenreSelect = (genreId: number) => {
+    setHasUserInteracted(true);
     setGenres(prev =>
       prev.includes(genreId) ? prev.filter(g => g !== genreId) : [...prev, genreId]
     );
   };
 
   const handleLanguageSelect = (language: string) => {
+    setHasUserInteracted(true);
     setLanguages(prev =>
       prev.includes(language) ? prev.filter(l => l !== language) : [...prev, language]
     );
@@ -59,6 +69,7 @@ const MediaFilter = ({ onFilterChange, mediaType = 'movie' }: MediaFilterProps) 
   const clearGenres = () => setGenres([]);
   const clearLanguages = () => setLanguages([]);
   const clearAll = () => {
+    setHasUserInteracted(true);
     clearGenres();
     clearLanguages();
     setYearRange([1920, currentYear]);
@@ -218,7 +229,10 @@ const MediaFilter = ({ onFilterChange, mediaType = 'movie' }: MediaFilterProps) 
                   min={1920}
                   max={currentYear}
                   value={yearRange}
-                  onChange={(value) => setYearRange(value as [number, number])}
+                  onChange={(value) => {
+                    setHasUserInteracted(true);
+                    setYearRange(value as [number, number]);
+                  }}
                   className="my-4"
                 />
               </div>
@@ -234,7 +248,10 @@ const MediaFilter = ({ onFilterChange, mediaType = 'movie' }: MediaFilterProps) 
                   max={10}
                   step={0.5}
                   value={rating}
-                  onChange={(value) => setRating(value as number)}
+                  onChange={(value) => {
+                    setHasUserInteracted(true);
+                    setRating(value as number);
+                  }}
                   className="my-4"
                 />
               </div>
