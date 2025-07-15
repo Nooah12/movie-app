@@ -107,7 +107,8 @@ export default function Watchlist() {
               genre_ids: [],
               origin_country: [],
               profile_path: '',
-              map: function() { return null }
+              runtime: 0,
+              map: function () { return null },
             }
 
             return (
