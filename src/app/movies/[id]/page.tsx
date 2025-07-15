@@ -1,17 +1,34 @@
-import { fetchMovieDetails } from '@/utils/api';
+import { fetchMovieCredits, fetchMovieDetails } from '@/utils/api';
 import Image from 'next/image';
+import { Type, CrewMember } from '@/utils/types';
+import { AiFillStar } from 'react-icons/ai';
 
 type tParams = Promise<{ id: string }>;
 
 export default async function MoviePage({ params }: { params: tParams }) {
   try {
     const { id } = await params;
-    const movie = await fetchMovieDetails(id);
+    const movie: Type = await fetchMovieDetails(id);
+    const credits = await fetchMovieCredits(id)
+
+    console.log('All crew:', credits.crew?.map(p => ({ name: p.name, job: p.job, department: p.department })));
+    
+    // Extract directors and writers from crew
+    const directors = credits.crew?.filter((person: CrewMember) => person.job === "Director").map((person: CrewMember) => person.name);
+    const writers = credits.crew?.filter((person: CrewMember) => person.department === "Writing").map((person: CrewMember) => person.name);
 
     return (
-      <main className='flex flex-col flex-grow'>
-        <div className='w-full'>
-          <div className='p-4 md:pt-8 flex flex-col md:flex-row content-center max-w-6xl mx-auto md:space-x-6'>
+      <section className='flex flex-col flex-grow'>
+          <div className='p-4 md:pt-8 flex flex-col xl:flex-row content-center max-w-6xl mx-auto md:space-x-6'>
+              <h2 className='text-3xl lg:text-xl mb-1 font-medium'>
+                {movie.title || movie.name}
+              </h2>
+              <div className='flex flex-row text-sm text-gray-400 mb-3'>
+                <span>{movie.release_date.slice(0,4)}</span>
+                <span className="mx-2">•</span>
+                {/* <span>{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</span> */}
+                <span>{movie.runtime} min</span>
+              </div>
             <Image
               src={`https://image.tmdb.org/t/p/original/${
                 movie.backdrop_path || movie.poster_path
@@ -23,22 +40,42 @@ export default async function MoviePage({ params }: { params: tParams }) {
               style={{ maxWidth: '100%', height: '100%' }}
             />
             <div className='p-2'>
-              <h2 className='text-lg mb-3 font-bold'>
-                {movie.title || movie.name}
-              </h2>
-              <p className='text-lg mb-3'>{movie.overview}</p>
-              <p className='mb-3'>
-                <span className='font-semibold mr-1'>Date Released:</span>
-                {movie.release_date || movie.first_air_date}
-              </p>
-              <p className='mb-3'>
-                <span className='font-semibold mr-1'>Rating:</span>
-                {movie.vote_count}
-              </p>
+              <p className='text-sm my-3'>{movie.overview}</p>
+              <div className='space-y-2'>
+                <div className='flex text-sm'>
+                  {/* <span className='font-semibold text-gray-400 w-28'>Rating:</span> */}
+                  <span className='flex items-center mb-2'><AiFillStar size={16} className='text-yellow-400' />{movie.vote_average?.toFixed(1)}/10 <span className='text-gray-400 ml-1'>({movie.vote_count} votes)</span></span>
+                </div>
+                <div className='flex text-sm'>
+                  <span className='font-semibold text-gray-400 w-28'>Genre:</span>
+                  <span>{movie.genres?.map((genre) => genre.name).join(', ')}</span>
+                </div>
+                <div className='flex text-sm'>
+                  <span className='font-semibold text-gray-400 w-28'>Director:</span>
+                  <span className='flex-1'>
+                    {directors?.join(', ') || 'N/A'}
+                  </span>
+                </div>
+                <div className='flex text-sm'>
+                  <span className='font-semibold text-gray-400 w-28'>Writers:</span>
+                  <span className='flex-1'>
+                    {writers?.join(', ') || 'N/A'}
+                  </span>
+                </div>
+                <div className='flex text-sm'>
+                  <span className='font-semibold text-gray-400 w-28'>Actors:</span>
+                  <span className='flex-1'>
+                    {credits.cast?.slice(0, 4).map((actor: { name: string; }) => actor.name).join(', ')}
+                  </span>
+                </div>
+                <div className='flex text-sm'>
+                  <span className='font-semibold text-gray-400 w-28'>Date Released:</span>
+                  <span>{movie.release_date || movie.first_air_date}</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </main>
+      </section>
     );
   } catch (error) {
     console.error('Error loading movie details:', error);

@@ -15,6 +15,9 @@ export interface Type {
     video: boolean;
     genre_ids: number[];
     media_type: 'movie' | 'tv' | 'person';
+    genres?: GenreType[];
+    actors?: Actor[];
+    runtime: number;
     //tv
     name: string;
     original_name: string;
@@ -40,4 +43,12 @@ export type Actor = {
     biography: string;
     birthday: string;
     known_for_department: string;
+  }
+
+export type CrewMember = {
+    id: number;
+    name: string;
+    job: string;
+    department: string;
+    profile_path: string | null;
   }

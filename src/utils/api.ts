@@ -85,6 +85,24 @@ export const fetchShowDetails = async (id: string) => {
   }
 };
 
+export const fetchMovieCredits = async (movieId: string) => {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${API_KEY}`,
+      { next: { revalidate: 3600 } }
+    );
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch movie credits: ${res.status}`);
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching movie credits:', error);
+    throw error;
+  }
+};
+
 export const fetchActorDetails = async (actorId: string): Promise<Actor> => {
   try {
     const res = await fetch(
