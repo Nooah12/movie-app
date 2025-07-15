@@ -17,11 +17,11 @@ export default async function MoviePage({ params }: { params: tParams }) {
 
     return (
       <section className='flex flex-col flex-grow'>
-          <div className='p-4 md:pt-8 flex flex-col xl:flex-row max-w-6xl mx-auto'>
-              <h2 className='text-3xl md:text-4xl mb-1 font-medium'>
+          <div className='p-4 md:pt-8 flex flex-col max-w-7xl mx-auto'>
+              <h2 className='text-3xl md:text-4xl lg:text-5xl mb-1 md:mb-2 lg:mb-3 font-medium'>
                 {movie.title || movie.name}
               </h2>
-              <div className='flex flex-row text-sm text-gray-400 mb-3'>
+              <div className='flex flex-row text-xs md:text-sm text-gray-400 mb-3'>
                 <span>{movie.release_date.slice(0,4)}</span>
                 <span className="mx-2">•</span>
                 {/* <span>{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</span> */}
