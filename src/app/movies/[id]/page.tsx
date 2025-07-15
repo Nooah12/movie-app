@@ -10,8 +10,6 @@ export default async function MoviePage({ params }: { params: tParams }) {
     const { id } = await params;
     const movie: Type = await fetchMovieDetails(id);
     const credits = await fetchMovieCredits(id)
-
-    console.log('All crew:', credits.crew?.map(p => ({ name: p.name, job: p.job, department: p.department })));
     
     // Extract directors and writers from crew
     const directors = credits.crew?.filter((person: CrewMember) => person.job === "Director").map((person: CrewMember) => person.name);
@@ -19,8 +17,8 @@ export default async function MoviePage({ params }: { params: tParams }) {
 
     return (
       <section className='flex flex-col flex-grow'>
-          <div className='p-4 md:pt-8 flex flex-col xl:flex-row content-center max-w-6xl mx-auto md:space-x-6'>
-              <h2 className='text-3xl lg:text-xl mb-1 font-medium'>
+          <div className='p-4 md:pt-8 flex flex-col xl:flex-row max-w-6xl mx-auto'>
+              <h2 className='text-3xl md:text-4xl mb-1 font-medium'>
                 {movie.title || movie.name}
               </h2>
               <div className='flex flex-row text-sm text-gray-400 mb-3'>
@@ -29,47 +27,50 @@ export default async function MoviePage({ params }: { params: tParams }) {
                 {/* <span>{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</span> */}
                 <span>{movie.runtime} min</span>
               </div>
-            <Image
-              src={`https://image.tmdb.org/t/p/original/${
-                movie.backdrop_path || movie.poster_path
-              }`}
-              width={500}
-              height={300}
-              alt='Movie poster'
-              className='rounded-lg'
-              style={{ maxWidth: '100%', height: '100%' }}
-            />
-            <div className='p-2'>
-              <p className='text-sm my-3'>{movie.overview}</p>
-              <div className='space-y-2'>
-                <div className='flex text-sm'>
-                  {/* <span className='font-semibold text-gray-400 w-28'>Rating:</span> */}
+            {/* --------- IMG ----------- */}
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+              <Image
+                src={`https://image.tmdb.org/t/p/original/${
+                  movie.backdrop_path || movie.poster_path
+                }`}
+                alt='Movie poster'
+                fill
+                className='object-cover'
+                priority
+              />
+            </div>
+            {/* --------- Details ----------- */}
+            <div className=''>
+              <p className='text-sm md:text-base my-4'>{movie.overview}</p>
+              <div className='space-y-2 text-sm md:text-base'>
+                <div className='flex'>
+                  {/* <span className='font-semibold text-gray-400 w-32'>Rating:</span> */}
                   <span className='flex items-center mb-2'><AiFillStar size={16} className='text-yellow-400' />{movie.vote_average?.toFixed(1)}/10 <span className='text-gray-400 ml-1'>({movie.vote_count} votes)</span></span>
                 </div>
-                <div className='flex text-sm'>
-                  <span className='font-semibold text-gray-400 w-28'>Genre:</span>
+                <div className='flex'>
+                  <span className='font-semibold text-gray-400 w-32'>Genre:</span>
                   <span>{movie.genres?.map((genre) => genre.name).join(', ')}</span>
                 </div>
-                <div className='flex text-sm'>
-                  <span className='font-semibold text-gray-400 w-28'>Director:</span>
+                <div className='flex'>
+                  <span className='font-semibold text-gray-400 w-32'>Director:</span>
                   <span className='flex-1'>
                     {directors?.join(', ') || 'N/A'}
                   </span>
                 </div>
-                <div className='flex text-sm'>
-                  <span className='font-semibold text-gray-400 w-28'>Writers:</span>
+                <div className='flex'>
+                  <span className='font-semibold text-gray-400 w-32'>Writers:</span>
                   <span className='flex-1'>
                     {writers?.join(', ') || 'N/A'}
                   </span>
                 </div>
-                <div className='flex text-sm'>
-                  <span className='font-semibold text-gray-400 w-28'>Actors:</span>
+                <div className='flex'>
+                  <span className='font-semibold text-gray-400 w-32'>Actors:</span>
                   <span className='flex-1'>
                     {credits.cast?.slice(0, 4).map((actor: { name: string; }) => actor.name).join(', ')}
                   </span>
                 </div>
-                <div className='flex text-sm'>
-                  <span className='font-semibold text-gray-400 w-28'>Date Released:</span>
+                <div className='flex'>
+                  <span className='font-semibold text-gray-400 w-32'>Release date:</span>
                   <span>{movie.release_date || movie.first_air_date}</span>
                 </div>
               </div>
