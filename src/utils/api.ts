@@ -48,7 +48,7 @@ export async function fetchTopRatedShows () {
   );
 
   if (!res.ok) {
-      throw new Error('Failed to fetch top rated movies');
+      throw new Error('Failed to fetch top rated shows');
   }
 
   return res.json();

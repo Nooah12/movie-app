@@ -1,27 +1,63 @@
-export interface Type {
-    map(arg0: (result: Type) => import("react").JSX.Element): import("react").ReactNode;
+// Base interface for common properties between movies and TV shows
+export interface MediaItem {
     id: number;
-    title: string;
-    original_title: string;
+    media_type: 'movie' | 'tv' | 'person';
     original_language: string;
     overview: string;
     poster_path: string | null;
     backdrop_path: string | null;
-    release_date: string;
     vote_average: number;
     vote_count: number;
     popularity: number;
+    genre_ids?: number[];
+    genres?: GenreType[];
+}
+
+// Movie specific interface
+export interface Movie extends MediaItem {
+    media_type: 'movie';
+    title: string;
+    original_title: string;
+    release_date: string;
     adult: boolean;
     video: boolean;
-    genre_ids: number[];
-    media_type: 'movie' | 'tv' | 'person';
-    genres?: GenreType[];
+    runtime?: number;
     actors?: Actor[];
-    runtime: number;
-    //tv
+}
+
+// TV Show specific interface
+export interface TVShow extends MediaItem {
+    media_type: 'tv';
     name: string;
     original_name: string;
     first_air_date: string;
+    origin_country: string[];
+    actors?: Actor[];
+}
+
+// Person interface
+export interface Person extends MediaItem {
+    media_type: 'person';
+    name: string;
+    profile_path: string;
+    known_for_department?: string;
+}
+
+// Union type for any media item
+export type MediaUnion = Movie | TVShow | Person;
+
+// For backward compatibility with existing code
+export interface Type extends MediaItem {
+    // These properties exist in both Movie and TVShow but with different meanings
+    title: string; // movie title
+    name: string;  // show name
+    original_title: string;
+    original_name: string;
+    release_date: string;
+    first_air_date: string;
+    adult: boolean;
+    video: boolean;
+    runtime?: number;
     origin_country: string[];
     profile_path: string;
 }
