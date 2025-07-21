@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-//import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { QueryClientProvider } from "@/provider/query-client-provider";
@@ -22,7 +21,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`bg-[#020916] text-white`}>
         <QueryClientProvider>
-          {/* <Header /> */}
           <header className="">
             <Navbar />
           </header>
